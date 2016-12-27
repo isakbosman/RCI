@@ -16,7 +16,7 @@ namespace RCI
 
     public static class FileSystemObjectReader
     {
-        public static IEnumerable<FsFolder> Read(string path, string seatchpattern, Action<int> status)
+        public static IEnumerable<DirectoryInfo> Read(string path, string seatchpattern, Action<int> status)
         {
             return new FileSystemReader(path, seatchpattern).ReadRootDirectory(status);
         }
@@ -56,7 +56,7 @@ namespace RCI
         [DllImport("kernel32.dll")]
         static extern uint GetFullPathName(string lpFileName, uint nBufferLength, [Out] StringBuilder lpBuffer, out StringBuilder lpFilePart);
 
-        private readonly Dictionary<string, FsFolder> _directoryData;
+        private readonly Dictionary<string, DirectoryInfo> _directoryData;
         private readonly string _pattern;
         private readonly string _currentpath;
         private int _objectsFound;
@@ -68,12 +68,12 @@ namespace RCI
         {
             _currentpath = path;
             _pattern = searchPattern;
-            _directoryData = new Dictionary<string, FsFolder>();
+            _directoryData = new Dictionary<string, DirectoryInfo>();
             _parallelTasks = new List<Task>();
             _parallelDepth = 0;
         }
 
-        public void ReadDirectory(string path, Action<int> status, FsFolder folder = null)
+        public void ReadDirectory(string path, Action<int> status, DirectoryInfo folder = null)
         {
             bool result = true;
 
@@ -105,13 +105,13 @@ namespace RCI
                     if (!string.IsNullOrEmpty(_win32FindData.cFileName) && !_win32FindData.cFileName.StartsWith("."))
                     {
 
-                        var subfolder = new FsFolder(path, _win32FindData);
+                        var subfolder = new DirectoryInfo(path, _win32FindData);
                         string fullFolderPath = Path.Combine(subfolder.ParentPath, subfolder.Name);
 
                         if (folder != null)
                         {
-                            subfolder.ParentFolder = folder;
-                            folder.SubFolders.Add(subfolder);
+                            subfolder.ParentDirectory = folder;
+                            folder.ChildDirectories.Add(subfolder);
                         }
 
                         _directoryData.Add(fullFolderPath, subfolder);
@@ -124,7 +124,7 @@ namespace RCI
                 }
                 else
                 {
-                    folder?.Files.Add(new FsFile(path, _win32FindData));
+                    folder?.Files.Add(new FileInfo(path, _win32FindData));
                 }
                 _objectsFound++;
                 status(_objectsFound);
@@ -133,7 +133,7 @@ namespace RCI
             _win32FindData = null;
         }
 
-        public IEnumerable<FsFolder> ReadRootDirectory(Action<int> status)
+        public IEnumerable<DirectoryInfo> ReadRootDirectory(Action<int> status)
         {
             try
             {

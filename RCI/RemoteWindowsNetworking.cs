@@ -1,5 +1,6 @@
 ﻿using System;
 using System.CodeDom;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -426,39 +427,35 @@ namespace RCI
             /// <param name="shares">An out property to hold the discovered shares</param>
             /// <param name="level"></param>
             /// <returns></returns>
-            public static string EnumerateRemoteUncConnection(string path, out string[] shares, int level = 2)
+            public static string EnumerateRemoteUncConnection(string path, out IDictionary<string, string> shares,
+                int level = 2)
             {
                 int entriesread = 0, totalentries = 0, resumeHandle = 0;
                 int offset = Marshal.SizeOf(typeof(SHARE_INFO_2));
                 IntPtr bufPtr = IntPtr.Zero;
                 StringBuilder server = new StringBuilder(path);
+                shares = new ConcurrentDictionary<string, string>();
 
-                int ret = NetShareEnum(server, level, ref bufPtr, MAX_PREFERRED_LENGTH, ref entriesread, ref totalentries, ref resumeHandle);
+                int ret = NetShareEnum(server, level, ref bufPtr, MAX_PREFERRED_LENGTH, ref entriesread,
+                    ref totalentries, ref resumeHandle);
 
-                if (ret == NO_ERROR)
-                {
-                    shares = new string[entriesread];
-
-                    IntPtr currentPtr = bufPtr;
-
-                    Console.WriteLine($"Discovered {entriesread} Shares at [{path}]");
-
-                    for (int i = 0; i < entriesread; i++)
-                    {
-                        SHARE_INFO_2 shi = (SHARE_INFO_2) Marshal.PtrToStructure(currentPtr, typeof(SHARE_INFO_2));
-
-                        if (!shi.shi2_netname.EndsWith("$"))
-                            shares[i] = shi.shi2_netname;
-
-                        currentPtr = new IntPtr(currentPtr.ToInt32() + offset);
-                    }
-                    NetApiBufferFree(bufPtr);
-                }
-                else
-                {
-                    shares = new string[0];
+                if (ret != NO_ERROR)
                     return GetErrorForNumber(ret);
+
+                IntPtr currentPtr = bufPtr;
+
+                Console.WriteLine($"Discovered {entriesread} Shares at [{path}]");
+
+                for (int i = 0; i < entriesread; i++)
+                {
+                    SHARE_INFO_2 shi = (SHARE_INFO_2) Marshal.PtrToStructure(currentPtr, typeof(SHARE_INFO_2));
+
+                    if (!shi.shi2_netname.EndsWith("$"))
+                        shares.Add(Path.Combine(path, shi.shi2_netname), shi.shi2_path);
+
+                    currentPtr = new IntPtr(currentPtr.ToInt32() + offset);
                 }
+                NetApiBufferFree(bufPtr);
                 return null;
             }
         }

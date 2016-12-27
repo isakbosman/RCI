@@ -161,28 +161,30 @@ namespace RCI
                         {
                             WriteToConsole(ConsoleColor.Yellow, "Could not find path. Starting share discovery...");
 
-                            string[] shares;
+                            IDictionary<string, string> shares;
                             result = RemoteWindowsNetworking.EnumerateRemoteUncConnection(share, out shares);
                             
                             if(!string.IsNullOrEmpty(result))
                                 WriteToConsole(ConsoleColor.Red, "Share Discovery Failed. Reason: " + result);
 
-                            if(shares == null || shares.Length == 0)
-                                WriteToConsole(ConsoleColor.Blue, "No Shares Found");
-
-                            for (var i = 0; i < shares?.Length; i++)
+                            if (shares == null || !shares.Any())
                             {
-                                if (shares[i] != null)
-                                {
-                                    string sharePath = Path.Combine(share, shares[i]);
+                                WriteToConsole(ConsoleColor.Blue, "No Shares Found");
+                                return;
+                            }
+
+
+                            foreach(var item in shares)
+                            {
+                                
+                                    string sharePath = item.Key;
                                     if (Directory.Exists(sharePath) &&
                                         VerifyAccessRights(sharePath, FileSystemRights.CreateFiles))
                                         WriteToConsole(ConsoleColor.Green,
-                                            $"Successfully connected to [{sharePath}] with *FULL* Permissions");
+                                            $"Successfully connected to [{sharePath}] with *FULL* Permissions AND local path is [{item.Value}]");
                                     else
                                         WriteToConsole(ConsoleColor.Red,
-                                            $"Connection to Share [{sharePath}] failed or Permissions invalid");
-                                }
+                                            $"Connection to Share [{sharePath}] failed or Permissions invalid AND local path = [{item.Value}]");
                             }
                         }
                     }
