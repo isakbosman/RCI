@@ -1,12 +1,16 @@
-﻿using System;
+﻿/* 
+ * Copyright (C) 2017 kryptogeek (kryptogeek@privacyrequired.com)
+ * All rights reserved.
+ *
+ * This application is network file system connectivity utility written
+ * by Isak Bosman (kryptogeek@privacyrequired.com).
+ * 
+ */
+using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Security;
 using System.Security.AccessControl;
-using System.Text;
-using System.Threading.Tasks;
 using RCI.RCI;
 
 namespace RCI
@@ -181,12 +185,13 @@ namespace RCI
                                     if (Directory.Exists(sharePath) &&
                                         VerifyAccessRights(sharePath, FileSystemRights.CreateFiles))
                                         WriteToConsole(ConsoleColor.Green,
-                                            $"Successfully connected to [{sharePath}] with *FULL* Permissions AND local path is [{item.Value}]");
+                                            $"Successfully connected to [{sharePath} ({item.Value})] with *FULL* Permissions]");
                                     else
                                         WriteToConsole(ConsoleColor.Red,
-                                            $"Connection to Share [{sharePath}] failed or Permissions invalid AND local path = [{item.Value}]");
+                                            $"Connection to Share [{sharePath} ({item.Value})] Failed or Permissions Invalid");
                             }
                         }
+                       RemoteWindowsNetworking.DisconnectRemote(share);
                     }
                     else
                     {
@@ -198,7 +203,7 @@ namespace RCI
             }
             catch (Exception exp)
             {
-                WriteToConsole(ConsoleColor.Red, "An error occured. Details: " + exp.Message);
+                WriteToConsole(ConsoleColor.Red, "An error occurred. Details: " + exp.Message);
             }
                 
         }

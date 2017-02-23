@@ -1,11 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿/* 
+ * Copyright (C) 2017 kryptogeek (kryptogeek@privacyrequired.com)
+ * All rights reserved.
+ *
+ * This application is network file system connectivity utility written
+ * by Isak Bosman (kryptogeek@privacyrequired.com).
+ * 
+ */
+using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RCI
 {

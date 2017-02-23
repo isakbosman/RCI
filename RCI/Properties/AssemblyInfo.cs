@@ -1,16 +1,23 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
+﻿/* 
+ * Copyright (C) 2017 kryptogeek (kryptogeek@privacyrequired.com)
+ * All rights reserved.
+ *
+ * This application is network file system connectivity utility written
+ * by Isak Bosman (kryptogeek@privacyrequired.com).
+ * 
+ */
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("RCI")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Network File System Connection Utility")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Kryptogeek")]
 [assembly: AssemblyProduct("RCI")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCopyright("Copyright © 2017 Kryptogeek")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +39,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.1.0.0")]
+[assembly: AssemblyFileVersion("1.1.0.0")]

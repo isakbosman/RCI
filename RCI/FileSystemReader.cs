@@ -1,4 +1,12 @@
-﻿using System;
+﻿/* 
+ * Copyright (C) 2017 kryptogeek (kryptogeek@privacyrequired.com)
+ * All rights reserved.
+ *
+ * This application is network file system connectivity utility written
+ * by Isak Bosman (kryptogeek@privacyrequired.com).
+ * 
+ */
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
