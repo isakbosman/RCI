@@ -40,12 +40,11 @@ supported Windows Shell. (Powershell or Cmd)
 
 2.1 As a first step place the RCI.exe file in a desired location on the test machine.
 
-2.2 Open the desired shell with Administrators privileges by right clicking on the application icon and selecting ìRun As Administratorî
+2.2 Open the desired shell with Administrators privileges by right clicking on the application icon and selecting ‚ÄúRun As Administrator‚Äù
 
 2.3 Navigate to the path where the executable was dropped by typing the following command:
 
 .. code-block:: bash
-
 $ cd path_to_executable
 
 The command line application should then show the current directory as the location of
@@ -54,13 +53,12 @@ the RCI executable file
 2.4 Execute the command to test the File Share connection and the import (optional):
 
 .. code-block:: bash
-
-$ RCI [-r or ñl] [Path to Share] ñu [Full Username]
+$ RCI [-r or ‚Äìl] [Path to Share] ‚Äìu [Full Username]
 
 Review the Parameter Information and Output Definition sections for detailed
 information on what each parameter represents and what options are available
 
-2.4 RCI will ask for the password of the userís credentials to use for connecting to 
+2.4 RCI will ask for the password of the user‚Äôs credentials to use for connecting to 
 the share. Enter the password and press [Enter]
 
 2.5 RCI will connect to the local or remote share and provide verbose output of the
@@ -102,7 +100,6 @@ After running the utility in the command line as per step 2.4 a connection attem
 made with the provided details:
 
 .. code-block:: bash
-
 $ Connecting to [Local/Remote] Share...
 
 If the connection succeeded RCI will provide output of this:
@@ -122,12 +119,11 @@ Once the connection has succeeded RCI will attempt to verify that there are Read
 Write permissions on the share. The following is example output:
 
 .. code-block:: bash
-
 $ Sufficient Permissions Exist For User [username]
 
 OPTIONAL OUTPUT:
 
-If specifying the ì-iî parameter when running step 2.4 RCI will attempt to mimic the
+If specifying the ‚Äú-i‚Äù parameter when running step 2.4 RCI will attempt to mimic the
 import operation and will read all the file system objects.
 This is useful in many ways. The output indicates when it started, when it finished and
 how many objects was discovered.
